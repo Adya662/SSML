@@ -31,70 +31,16 @@ TEXT_INPUT = (
 )
 
 SSML_INPUT = """<speak>
-  <amazon:effect name=\"drc\"> 
-    <amazon:auto-breaths volume=\"strong\" frequency=\"high\" duration=\"short\"> 
-      <amazon:domain name=\"conversational\"> 
-        <p>
-          <!-- Start very loud and coarse; sharp inhale -->
-          <s>
-            <amazon:breath volume=\"strong\" duration=\"short\"/>
-            <prosody volume=\"x-loud\" rate=\"fast\" pitch=\"+6st\">
-              <emphasis level=\"strong\">ARE</emphasis>
-              <prosody pitch=\"+5st\"><emphasis level=\"strong\">YOU</emphasis></prosody>
-              <prosody pitch=\"+6st\" rate=\"fast\"><emphasis level=\"strong\">REALLY</emphasis></prosody>
-              <amazon:breath volume=\"medium\" duration=\"short\"/>
-              <prosody pitch=\"+7st\" rate=\"fast\"><emphasis level=\"strong\">KIDDING</emphasis></prosody>
-              <prosody pitch=\"+8st\"><emphasis level=\"strong\">ME?!</emphasis></prosody>
-            </prosody>
-          </s>
-
-          <!-- Rising energy, clipped breaths between words -->
-          <s>
-            <prosody volume=\"loud\" rate=\"fast\" pitch=\"+4st\">
-              <emphasis level=\"strong\">It</emphasis>
-              <amazon:breath volume=\"medium\" duration=\"short\"/>
-              <prosody pitch=\"+5st\"><emphasis level=\"strong\">doesn't</emphasis></prosody>
-              <amazon:breath volume=\"medium\" duration=\"short\"/>
-              <prosody pitch=\"+6st\"><emphasis level=\"strong\">make</emphasis></prosody>
-              <prosody pitch=\"+7st\"><emphasis level=\"strong\">sense</emphasis></prosody>
-              <prosody pitch=\"+6st\">?</prosody>
-            </prosody>
-          </s>
-
-          <!-- Staccato delivery; then laugh-out at the end -->
-          <s>
-            <prosody volume=\"loud\" rate=\"fast\" pitch=\"+5st\">
-              <prosody pitch=\"+4st\"><emphasis level=\"moderate\">Like</emphasis></prosody>
-              <prosody pitch=\"+3st\"><emphasis level=\"strong\">bro</emphasis></prosody>
-              <prosody pitch=\"+4st\"><emphasis level=\"strong\">what</emphasis></prosody>
-              <prosody pitch=\"+5st\"><emphasis level=\"strong\">even</emphasis></prosody>
-              <prosody pitch=\"+6st\"><emphasis level=\"strong\">is</emphasis></prosody>
-              <prosody pitch=\"+7st\"><emphasis level=\"strong\">it</emphasis></prosody>.
-              <break time=\"200ms\"/>
-              <prosody rate=\"medium\" pitch=\"-2st\" volume=\"medium\">
-                <say-as interpret-as=\"interjection\">ha</say-as>
-                <say-as interpret-as=\"interjection\">ha</say-as>
-                <prosody pitch=\"-1st\"><say-as interpret-as=\"interjection\">ha</say-as></prosody>
-              </prosody>
-            </prosody>
-          </s>
-
-          <!-- Sarcastic drop with whispered effect and a soft exhale -->
-          <s>
-            <prosody rate=\"slow\" pitch=\"-2st\" volume=\"medium\">
-              <amazon:effect name=\"whispered\">
-                <prosody pitch=\"+1st\"><emphasis level=\"moderate\">Wow...</emphasis></prosody>
-                <prosody pitch=\"-1st\">that</prosody>
-                <prosody pitch=\"+1st\">was</prosody>
-                <prosody pitch=\"-2st\">brilliant.</prosody>
-              </amazon:effect>
-              <amazon:breath volume=\"weak\" duration=\"long\"/>
-            </prosody>
-          </s>
-        </p>
-      </amazon:domain>
-    </amazon:auto-breaths>
-  </amazon:effect>
+  <s>
+    <prosody pitch="+12%" rate="fast" volume="loud">Are you <emphasis level="strong">really</emphasis> kidding me?</prosody>
+  </s>
+  <s>
+    <amazon:breath duration="short" volume="soft"/>
+    <prosody pitch="+8%" rate="medium">It <emphasis level="moderate">doesn't</emphasis> make sense?</prosody>
+  </s>
+  <s>
+    <prosody rate="fast">Like, bro, <break time="500ms"/> what even is it.</prosody>
+  </s>
 </speak>"""
 
 # ================== RUNTIME ==================
@@ -366,7 +312,7 @@ def grid_synthesize(text, ssml, *, language_code=GRID_LANGUAGE_CODE, outdir=None
             print(f"[SKIP text] {vid}/{eng}: {e}")
         try:
             synthesize(ssml, text_type="ssml", voice=vid, engine=eng,
-                       outpath=os.path.join(voice_dir, f"ssml_{vid}_{eng}.{OUTPUT_FORMAT}"))
+                       outpath=os.path.join(voice_dir, f"ssml_gpt_{vid}_{eng}.{OUTPUT_FORMAT}"))
         except Exception as e:
             print(f"[SKIP ssml] {vid}/{eng}: {e}")
 
@@ -385,14 +331,14 @@ def main():
 
     ssml_engine = "standard" if PRESERVE_RICH_SSML else selected_engine
     try:
-        baseline_ssml_path = os.path.join(OUTPUT_BASE_DIR, "baseline", f"ssml_{selected_voice}_{ssml_engine}.{OUTPUT_FORMAT}")
+        baseline_ssml_path = os.path.join(OUTPUT_BASE_DIR, "baseline", f"ssml_gpt_{selected_voice}_{ssml_engine}.{OUTPUT_FORMAT}")
         synthesize(SSML_INPUT,  text_type="ssml", voice=selected_voice,
                    engine=ssml_engine, outpath=baseline_ssml_path)
     except Exception as e:
         # Fallback: if chosen engine (likely standard) is unsupported, try neural with sanitization
         print(f"[Fallback] SSML synthesis failed with {ssml_engine} for {selected_voice}: {e}. Retrying with neural…")
         ssml_engine = "neural"
-        baseline_ssml_path = os.path.join(OUTPUT_BASE_DIR, "baseline", f"ssml_{selected_voice}_{ssml_engine}.{OUTPUT_FORMAT}")
+        baseline_ssml_path = os.path.join(OUTPUT_BASE_DIR, "baseline", f"ssml_gpt_{selected_voice}_{ssml_engine}.{OUTPUT_FORMAT}")
         synthesize(SSML_INPUT,  text_type="ssml", voice=selected_voice,
                    engine=ssml_engine, outpath=baseline_ssml_path)
 

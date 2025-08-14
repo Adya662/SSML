@@ -1,0 +1,4 @@
+# Exclude local dirs and assets
+second try/
+recs/
+.venv/

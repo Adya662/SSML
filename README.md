@@ -110,11 +110,59 @@ From the script’s top-level variables:
 
 ---
 
-If you want, I can also generate a CSV index that lists every file in this catalogue with:
-- Voice name
-- Engine
-- File path
-- Gender
-- Language
+## 📜 Catalogue
 
-That way you can sort and filter in Excel before listening.
+### baseline/
+- baseline/plain_Joanna_neural.mp3
+- baseline/ssml_Joanna_neural.mp3
+
+### grid/neural/
+- grid/neural/Danielle/text_Danielle_neural.mp3
+- grid/neural/Danielle/ssml_Danielle_neural.mp3
+- grid/neural/Gregory/text_Gregory_neural.mp3
+- grid/neural/Gregory/ssml_Gregory_neural.mp3
+- grid/neural/Ivy/text_Ivy_neural.mp3
+- grid/neural/Ivy/ssml_Ivy_neural.mp3
+- grid/neural/Joanna/text_Joanna_neural.mp3
+- grid/neural/Joanna/ssml_Joanna_neural.mp3
+- grid/neural/Joey/text_Joey_neural.mp3
+- grid/neural/Joey/ssml_Joey_neural.mp3
+- grid/neural/Justin/text_Justin_neural.mp3
+- grid/neural/Justin/ssml_Justin_neural.mp3
+- grid/neural/Kendra/text_Kendra_neural.mp3
+- grid/neural/Kendra/ssml_Kendra_neural.mp3
+- grid/neural/Kevin/text_Kevin_neural.mp3
+- grid/neural/Kevin/ssml_Kevin_neural.mp3
+- grid/neural/Kimberly/text_Kimberly_neural.mp3
+- grid/neural/Kimberly/ssml_Kimberly_neural.mp3
+- grid/neural/Matthew/text_Matthew_neural.mp3
+- grid/neural/Matthew/ssml_Matthew_neural.mp3
+- grid/neural/Ruth/text_Ruth_neural.mp3
+- grid/neural/Ruth/ssml_Ruth_neural.mp3
+- grid/neural/Salli/text_Salli_neural.mp3
+- grid/neural/Salli/ssml_Salli_neural.mp3
+- grid/neural/Stephen/text_Stephen_neural.mp3
+- grid/neural/Stephen/ssml_Stephen_neural.mp3
+
+### grid/standard/
+- grid/standard/Ivy/text_Ivy_standard.mp3
+- grid/standard/Joanna/text_Joanna_standard.mp3
+- grid/standard/Joey/text_Joey_standard.mp3
+- grid/standard/Justin/text_Justin_standard.mp3
+- grid/standard/Kendra/text_Kendra_standard.mp3
+- grid/standard/Kimberly/text_Kimberly_standard.mp3
+- grid/standard/Matthew/text_Matthew_standard.mp3
+- grid/standard/Salli/text_Salli_standard.mp3
+
+### grid/generative/
+- grid/generative/Danielle/text_Danielle_generative.mp3
+- grid/generative/Joanna/text_Joanna_generative.mp3
+- grid/generative/Matthew/text_Matthew_generative.mp3
+- grid/generative/Ruth/text_Ruth_generative.mp3
+- grid/generative/Stephen/text_Stephen_generative.mp3
+
+### grid/long-form/
+- grid/long-form/Danielle/text_Danielle_long-form.mp3
+- grid/long-form/Gregory/text_Gregory_long-form.mp3
+- grid/long-form/Patrick/text_Patrick_long-form.mp3
+- grid/long-form/Ruth/text_Ruth_long-form.mp3

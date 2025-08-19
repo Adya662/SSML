@@ -15,7 +15,8 @@ BASELINE_VOICE   = "Joanna"         # e.g., "Matthew", "Amy", "Aria" (region-dep
 OUTPUT_FORMAT    = "mp3"            # "mp3" | "ogg_vorbis" | "pcm"
 SAMPLE_RATE      = "24000"
 GRID_LANGUAGE_CODE = "en-US"        # None for all languages
-DO_GRID            = True           # try all voice/engine combos
+DO_GRID            = False          # try all voice/engine combos
+OUTPUT_BASE_DIR    = "out_vm"       # base folder for all recordings
 
 # Long-form limits (room for safety)
 NEURAL_LIMIT  = 1500
@@ -23,86 +24,247 @@ STANDARD_LIMIT= 3000
 SSML_HEADROOM = 0.85  # tags add chars; use less than hard limit
 
 TEXT_INPUT = (
-    "Given the severity of this situation and the fact that this is clearly our fulfillment error, "
-    "I'm expediting your replacement through our express delivery service, and I'm pleased to inform you "
-    "that this will be much faster than our standard delivery times. Here's the timeline I can guarantee for your replacement: "
-    "Since this is being processed as a priority case, I'm arranging for your replacement dress to be dispatched today itself if we can get it processed within the next few hours, "
-    "or definitely by tomorrow morning at the latest. With our express delivery service, which I'm providing to you at no additional cost as compensation for the inconvenience, "
-    "you should receive your correct red dress within 2-3 business days maximum. More specifically, if the dress ships today, you should receive it by August 15th or 16th at the latest. "
-    "If it ships tomorrow morning, you'll receive it by August 16th or 17th. This is significantly faster than our standard 5-7 day delivery window, and again, the express shipping charges are completely waived for you. "
-    "I'm also ensuring that you receive proactive tracking updates throughout the process. You'll get SMS notifications when the replacement order is created, when it's dispatched, when it's out for delivery, and when it's delivered. "
-    "You'll also receive email updates with detailed tracking information and the photographic verification I mentioned earlier. Additionally, I'm arranging for the return pickup of the incorrect blue dress to happen after you receive your replacement. "
-    "This way, if there are any unforeseen issues with the replacement (though I'm confident there won't be), you'll still have the blue dress as a backup until everything is completely resolved to your satisfaction. "
-    "Our delivery executive will also be given special instructions about your case, so they'll handle your package with extra care and will be available to address any immediate concerns you might have upon delivery."
+    """
+    One day, a rich merchant came to Birbal. He said to Birbal, “I have seven servants in my
+    house. One of them has stolen my bag of precious pearls. Please find out the thief.”
+    So Birbal went to the rich man’s house. He called all the seven servants in a room. He gave a
+    stick to each one of them. Then he said, “These are magic sticks. Just now all these sticks are
+    equal in length. Keep them with you and return tomorrow. If there is a thief in the house,
+    his stick will grow an inch longer by tomorrow.”
+    The servant who had stolen the bag of pearls was scared. He thought, “If I cut a piece of one
+    inch from my stick, I won’t be caught.” So he cut the stick and made it shorter by one inch.
+    The next day Birbal collected the sticks from the servants. He found that one servant’s stick
+    was short by an inch. Birbal pointed his finger at him and said, “Here is the thief.” The
+    servant confessed to his crime. He returned the bag of pearls. He was sent to jail.
+    """
 )
 
 SSML_INPUT = """<speak>
+  <!-- Level control -->
   <amazon:effect name="drc">
+    <!-- Natural breathing -->
     <amazon:auto-breaths volume="low" frequency="low" duration="short">
+      <!-- Conversational baseline -->
       <amazon:domain name="conversational">
-        <amazon:effect phonation="soft">
-          <amazon:effect vocal-tract-length="-5%">
-            <!-- p1 -->
-            <p><s>
-              <prosody rate="slow" pitch="-1st" volume="medium">Given the severity of this situation</prosody>
-              <break time="250ms"/>
-              <prosody rate="slow" pitch="-1st">and the fact that this is clearly our <phoneme alphabet="ipa" ph="fʊlˈfɪlmənt">fulfillment</phoneme> error,</prosody>
-              <break time="250ms"/>
-              <prosody rate="medium" pitch="-1st">I'm expediting your replacement through our express delivery service, and I'm pleased to inform you that this will be much faster than our standard delivery times.</prosody>
-            </s></p>
-            <!-- p2 -->
-            <p><s><prosody rate="slow" pitch="-1st">Here's the timeline I can guarantee for your replacement:</prosody></s></p>
-            <!-- p3 -->
-            <p><s>
-              <prosody rate="medium" pitch="-1st">Since this is being processed as a priority case, I'm arranging for your replacement dress to be <phoneme alphabet="ipa" ph="dɪˈspætʃt">dispatched</phoneme> today itself if we can get it processed within the next few hours,</prosody>
-              <break time="150ms"/>
-              <prosody rate="slow" pitch="-2st">or definitely by tomorrow morning at the latest.</prosody>
-            </s></p>
-            <!-- p4 -->
-            <p><s>
-              <prosody rate="slow" pitch="-1st">With our express delivery service, which I'm providing to you at no additional cost as compensation for the inconvenience,</prosody>
-              <break time="150ms"/>
-              <prosody rate="medium" pitch="-1st">you should receive your correct red <phoneme alphabet="ipa" ph="drɛs">dress</phoneme> within <sub alias="two to three">2–3</sub> business days maximum.</prosody>
-            </s></p>
-            <!-- p5 -->
-            <p><s>
-              <prosody rate="medium" pitch="-1st">More specifically, if the dress ships today, you should receive it by August <say-as interpret-as="ordinal">15</say-as> or <say-as interpret-as="ordinal">16</say-as> at the latest.</prosody>
-              <break time="120ms"/>
-              <prosody rate="medium" pitch="-1st">If it ships tomorrow morning, you'll receive it by August <say-as interpret-as="ordinal">16</say-as> or <say-as interpret-as="ordinal">17</say-as>.</prosody>
-            </s></p>
-            <!-- p6 -->
-            <p><s>
-              <prosody rate="medium" pitch="-1st">This is significantly faster than our <sub alias="five to seven">5–7</sub> day delivery window, and again, the express shipping charges are completely waived for you.</prosody>
-            </s></p>
-            <!-- p7 -->
-            <p><s>
-              <prosody rate="slow" pitch="-1st">I'm also ensuring that you receive proactive tracking updates throughout the process.</prosody>
-              <break time="100ms"/>
-              <prosody rate="medium" pitch="-1st">You'll get <sub alias="S M S">SMS</sub> notifications when the replacement order is created, when it's dispatched, when it's out for delivery, and when it's delivered.</prosody>
-              <break time="100ms"/>
-              <prosody rate="medium" pitch="-1st">You'll also receive email updates with detailed tracking information and the photographic verification I mentioned earlier.</prosody>
-            </s></p>
-            <!-- p8 -->
-            <p><s>
-              <prosody rate="slow" pitch="-1st">Additionally, I'm arranging for the return pickup of the incorrect blue <phoneme alphabet="ipa" ph="drɛs">dress</phoneme> to happen after you receive your replacement.</prosody>
-              <break time="100ms"/>
-              <prosody rate="medium" pitch="-1st">This way, if there are any unforeseen issues with the replacement</prosody>
-              <amazon:effect name="whispered">(though I'm confident there won't be)</amazon:effect>
-              <prosody rate="medium" pitch="-1st">, you'll still have the blue dress as a backup until everything is completely resolved to your satisfaction.</prosody>
-            </s></p>
-            <!-- p9 -->
-            <p><s>
-              <prosody rate="slow" pitch="-1st">Our delivery executive will also be given special instructions about your case, so they'll handle your package with extra care and will be available to address any immediate concerns you might have upon delivery.</prosody>
-            </s></p>
 
-            <mark name="end_of_message"/>
-          </amazon:effect>
-        </amazon:effect>
+        <!-- ==== NARRATOR ==== -->
+        <p>
+          <s>
+            <prosody rate="medium" pitch="+0st" volume="medium">
+              <emphasis level="reduced">One</emphasis> <emphasis level="reduced">day,</emphasis>
+              <emphasis level="moderate">a</emphasis> <emphasis level="moderate">rich</emphasis> <emphasis level="moderate">merchant</emphasis>
+              <emphasis level="reduced">came</emphasis> <emphasis level="reduced">to</emphasis>
+              <phoneme alphabet="ipa" ph="ˈbɪərbʌl"><emphasis level="moderate">Birbal</emphasis></phoneme>.
+            </prosody>
+          </s>
+        </p>
+
+        <!-- ==== MERCHANT SPEAKS (anxious / higher pitch, a bit faster) ==== -->
+        <p>
+          <s>
+            <prosody rate="fast" pitch="+2st" volume="medium">
+              <emphasis level="reduced">He</emphasis> <emphasis level="reduced">said</emphasis>
+              <emphasis level="reduced">to</emphasis>
+              <phoneme alphabet="ipa" ph="ˈbɪərbʌl"><emphasis level="reduced">Birbal</emphasis></phoneme>,
+              <break time="120ms"/>
+              <emphasis level="moderate">“I</emphasis> <emphasis level="moderate">have</emphasis>
+              <say-as interpret-as="cardinal">7</say-as> <emphasis level="moderate">servants</emphasis>
+              <emphasis level="reduced">in</emphasis> <emphasis level="reduced">my</emphasis> <emphasis level="moderate">house.</emphasis>
+            </prosody>
+          </s>
+          <s>
+            <prosody rate="fast" pitch="+1st" volume="medium">
+              <emphasis level="moderate">One</emphasis> <emphasis level="reduced">of</emphasis> <emphasis level="moderate">them</emphasis>
+              <emphasis level="reduced">has</emphasis> <emphasis level="moderate">stolen</emphasis>
+              <emphasis level="reduced">my</emphasis> <emphasis level="strong">bag</emphasis>
+              <emphasis level="reduced">of</emphasis> <emphasis level="strong">precious</emphasis> <emphasis level="strong">pearls.</emphasis>
+            </prosody>
+          </s>
+          <s>
+            <prosody rate="medium" pitch="+1st" volume="medium">
+              <emphasis level="moderate">Please</emphasis> <emphasis level="moderate">find</emphasis>
+              <emphasis level="reduced">out</emphasis> <emphasis level="reduced">the</emphasis>
+              <emphasis level="strong">thief.”</emphasis>
+            </prosody>
+          </s>
+        </p>
+
+        <!-- ==== NARRATOR ==== -->
+        <p>
+          <s>
+            <prosody rate="medium" pitch="+0st" volume="medium">
+              <phoneme alphabet="ipa" ph="ˈbɪərbʌl"><emphasis level="moderate">So</emphasis> <emphasis level="moderate">Birbal</emphasis></phoneme>
+              <emphasis level="reduced">went</emphasis> <emphasis level="reduced">to</emphasis>
+              <emphasis level="reduced">the</emphasis> <emphasis level="moderate">rich</emphasis> <emphasis level="reduced">man’s</emphasis> <emphasis level="reduced">house.</emphasis>
+            </prosody>
+          </s>
+          <s>
+            <prosody rate="medium" pitch="-1st" volume="medium">
+              <emphasis level="reduced">He</emphasis> <emphasis level="reduced">called</emphasis>
+              <emphasis level="reduced">all</emphasis> <say-as interpret-as="cardinal">7</say-as> <emphasis level="moderate">servants</emphasis>
+              <emphasis level="reduced">in</emphasis> <emphasis level="reduced">a</emphasis> <emphasis level="reduced">room.</emphasis>
+            </prosody>
+          </s>
+          <s>
+            <prosody rate="medium" pitch="-1st" volume="medium">
+              <emphasis level="reduced">He</emphasis> <emphasis level="reduced">gave</emphasis> <emphasis level="reduced">a</emphasis>
+              <emphasis level="moderate">stick</emphasis> <emphasis level="reduced">to</emphasis>
+              <emphasis level="reduced">each</emphasis> <emphasis level="reduced">one</emphasis> <emphasis level="reduced">of</emphasis>
+              <emphasis level="reduced">them.</emphasis>
+            </prosody>
+          </s>
+        </p>
+
+        <!-- ==== BIRBAL SPEAKS (calm / lower pitch, authoritative) ==== -->
+        <p>
+          <s>
+            <prosody rate="medium" pitch="-2st" volume="medium">
+              <emphasis level="reduced">Then</emphasis> <emphasis level="reduced">he</emphasis> <emphasis level="reduced">said,</emphasis>
+              <break time="120ms"/>
+              <emphasis level="moderate">“These</emphasis> <emphasis level="moderate">are</emphasis>
+              <emphasis level="strong">magic</emphasis> <emphasis level="moderate">sticks.</emphasis>
+            </prosody>
+          </s>
+          <s>
+            <prosody rate="medium" pitch="-2st" volume="medium">
+              <emphasis level="reduced">Just</emphasis> <emphasis level="reduced">now</emphasis>
+              <emphasis level="reduced">all</emphasis> <emphasis level="reduced">these</emphasis>
+              <emphasis level="moderate">sticks</emphasis> <emphasis level="reduced">are</emphasis>
+              <emphasis level="reduced">equal</emphasis> <emphasis level="reduced">in</emphasis> <emphasis level="reduced">length.</emphasis>
+            </prosody>
+          </s>
+          <s>
+            <prosody rate="medium" pitch="-2st" volume="medium">
+              <emphasis level="reduced">Keep</emphasis> <emphasis level="reduced">them</emphasis>
+              <emphasis level="reduced">with</emphasis> <emphasis level="reduced">you</emphasis>
+              <emphasis level="reduced">and</emphasis> <emphasis level="reduced">return</emphasis>
+              <emphasis level="moderate">tomorrow.</emphasis>
+            </prosody>
+          </s>
+          <s>
+            <prosody rate="medium" pitch="-2st" volume="medium">
+              <emphasis level="reduced">If</emphasis> <emphasis level="reduced">there</emphasis> <emphasis level="reduced">is</emphasis>
+              <emphasis level="reduced">a</emphasis> <emphasis level="strong">thief</emphasis>
+              <emphasis level="reduced">in</emphasis> <emphasis level="reduced">the</emphasis> <emphasis level="reduced">house,</emphasis>
+              <break time="100ms"/>
+              <emphasis level="reduced">his</emphasis> <emphasis level="moderate">stick</emphasis>
+              <emphasis level="reduced">will</emphasis> <emphasis level="reduced">grow</emphasis>
+              <emphasis level="reduced">an</emphasis> <say-as interpret-as="cardinal">1</say-as>
+              <emphasis level="reduced">inch</emphasis> <emphasis level="reduced">longer</emphasis>
+              <emphasis level="reduced">by</emphasis> <emphasis level="reduced">tomorrow.”</emphasis>
+            </prosody>
+          </s>
+        </p>
+
+        <!-- ==== THIEF'S THOUGHTS (whispered aside, nervous / faster) ==== -->
+        <p>
+          <s>
+            <amazon:effect name="whispered">
+              <prosody rate="fast" pitch="+1st" volume="soft">
+                <emphasis level="reduced">The</emphasis> <emphasis level="reduced">servant</emphasis>
+                <emphasis level="reduced">who</emphasis> <emphasis level="reduced">had</emphasis>
+                <emphasis level="reduced">stolen</emphasis> <emphasis level="reduced">the</emphasis>
+                <emphasis level="reduced">bag</emphasis> <emphasis level="reduced">of</emphasis>
+                <emphasis level="reduced">pearls</emphasis> <emphasis level="reduced">was</emphasis>
+                <emphasis level="strong">scared.</emphasis>
+              </prosody>
+            </amazon:effect>
+          </s>
+          <s>
+            <amazon:effect name="whispered">
+              <prosody rate="fast" pitch="+1st" volume="soft">
+                <emphasis level="reduced">He</emphasis> <emphasis level="reduced">thought,</emphasis>
+                <break time="80ms"/>
+                <emphasis level="moderate">“If</emphasis> <emphasis level="reduced">I</emphasis>
+                <emphasis level="reduced">cut</emphasis> <emphasis level="reduced">a</emphasis>
+                <say-as interpret-as="cardinal">1</say-as> <emphasis level="reduced">inch</emphasis>
+                <emphasis level="reduced">piece</emphasis> <emphasis level="reduced">from</emphasis>
+                <emphasis level="reduced">my</emphasis> <emphasis level="reduced">stick,</emphasis>
+                <emphasis level="reduced">I</emphasis> <emphasis level="reduced">won’t</emphasis>
+                <emphasis level="reduced">be</emphasis> <emphasis level="moderate">caught.”</emphasis>
+              </prosody>
+            </amazon:effect>
+          </s>
+          <s>
+            <amazon:effect name="whispered">
+              <prosody rate="fast" pitch="+1st" volume="soft">
+                <emphasis level="reduced">So</emphasis> <emphasis level="reduced">he</emphasis>
+                <emphasis level="reduced">cut</emphasis> <emphasis level="reduced">the</emphasis>
+                <emphasis level="reduced">stick</emphasis> <emphasis level="reduced">and</emphasis>
+                <emphasis level="reduced">made</emphasis> <emphasis level="reduced">it</emphasis>
+                <emphasis level="reduced">shorter</emphasis> <emphasis level="reduced">by</emphasis>
+                <say-as interpret-as="cardinal">1</say-as> <emphasis level="reduced">inch.</emphasis>
+              </prosody>
+            </amazon:effect>
+          </s>
+        </p>
+
+        <!-- ==== NARRATOR ==== -->
+        <p>
+          <s>
+            <prosody rate="medium" pitch="+0st" volume="medium">
+              <emphasis level="reduced">The</emphasis> <emphasis level="reduced">next</emphasis> <emphasis level="reduced">day</emphasis>
+              <phoneme alphabet="ipa" ph="ˈbɪərbʌl"><emphasis level="moderate">Birbal</emphasis></phoneme>
+              <emphasis level="reduced">collected</emphasis> <emphasis level="reduced">the</emphasis>
+              <emphasis level="moderate">sticks</emphasis> <emphasis level="reduced">from</emphasis>
+              <emphasis level="reduced">the</emphasis> <emphasis level="moderate">servants.</emphasis>
+            </prosody>
+          </s>
+          <s>
+            <prosody rate="medium" pitch="-1st" volume="medium">
+              <emphasis level="reduced">He</emphasis> <emphasis level="reduced">found</emphasis>
+              <emphasis level="reduced">that</emphasis> <emphasis level="reduced">one</emphasis>
+              <emphasis level="reduced">servant’s</emphasis> <emphasis level="moderate">stick</emphasis>
+              <emphasis level="reduced">was</emphasis> <emphasis level="strong">short</emphasis>
+              <emphasis level="reduced">by</emphasis> <say-as interpret-as="cardinal">1</say-as> <emphasis level="reduced">inch.</emphasis>
+            </prosody>
+          </s>
+        </p>
+
+        <!-- ==== BIRBAL (pointing, decisive / lower pitch) ==== -->
+        <p>
+          <s>
+            <prosody rate="medium" pitch="-2st" volume="medium">
+              <emphasis level="reduced">Birbal</emphasis> <emphasis level="reduced">pointed</emphasis>
+              <emphasis level="reduced">his</emphasis> <emphasis level="reduced">finger</emphasis>
+              <emphasis level="reduced">at</emphasis> <emphasis level="reduced">him</emphasis>
+              <emphasis level="reduced">and</emphasis> <emphasis level="reduced">said,</emphasis>
+              <break time="100ms"/>
+              <emphasis level="strong">“Here</emphasis> <emphasis level="strong">is</emphasis>
+              <emphasis level="strong">the</emphasis> <emphasis level="strong">thief.”</emphasis>
+            </prosody>
+          </s>
+        </p>
+
+        <!-- ==== NARRATOR (resolution) ==== -->
+        <p>
+          <s>
+            <prosody rate="medium" pitch="+0st" volume="medium">
+              <emphasis level="reduced">The</emphasis> <emphasis level="reduced">servant</emphasis>
+              <emphasis level="reduced">confessed</emphasis> <emphasis level="reduced">to</emphasis>
+              <emphasis level="reduced">his</emphasis> <emphasis level="moderate">crime.</emphasis>
+            </prosody>
+          </s>
+          <s>
+            <prosody rate="medium" pitch="+0st" volume="medium">
+              <emphasis level="reduced">He</emphasis> <emphasis level="reduced">returned</emphasis>
+              <emphasis level="reduced">the</emphasis> <emphasis level="strong">bag</emphasis>
+              <emphasis level="reduced">of</emphasis> <emphasis level="strong">pearls.</emphasis>
+            </prosody>
+          </s>
+          <s>
+            <prosody rate="slow" pitch="-1st" volume="medium">
+              <emphasis level="reduced">He</emphasis> <emphasis level="reduced">was</emphasis>
+              <emphasis level="reduced">sent</emphasis> <emphasis level="reduced">to</emphasis>
+              <emphasis level="strong">jail.</emphasis>
+            </prosody>
+          </s>
+        </p>
+
       </amazon:domain>
     </amazon:auto-breaths>
   </amazon:effect>
-</speak>
-"""
+</speak>"""
 
 # ================== RUNTIME ==================
 def _assert_aws_creds():
@@ -147,6 +309,34 @@ def sanitize_ssml_for_neural(ssml_text: str) -> str:
         return f'<break time="{ms}ms"/>'
     t = re.sub(r'<break\s+time="(\d+)ms"\s*/>', _clamp_break, t)
     return t
+
+def sanitize_ssml_for_neural_minimal(ssml_text: str) -> str:
+    """
+    Aggressive sanitization: keep only <speak>, <p>, <s>, and <break time="Nms"/>.
+    Strip all other tags and attributes to maximize Neural compatibility.
+    """
+    t = ssml_text
+    # Remove comments and amazon:* wrappers
+    t = re.sub(r"<!--.*?-->", "", t, flags=re.DOTALL)
+    t = re.sub(r"</?amazon:[^>]+>", "", t)
+    # Remove phoneme entirely keeping inner text
+    t = re.sub(r"<phoneme[^>]*>(.*?)</phoneme>", r"\1", t, flags=re.DOTALL)
+    # Remove all prosody, emphasis, say-as and any other tags except speak/p/s/break
+    t = re.sub(r"</?(prosody|emphasis|say-as|sub|mark|audio|lang|w|voice)[^>]*>", "", t, flags=re.IGNORECASE)
+    # Normalize break tags, remove attributes except time and clamp
+    def _normalize_break(m):
+        try:
+            ms = max(100, min(int(m.group(1)), 400))
+        except Exception:
+            ms = 200
+        return f'<break time="{ms}ms"/>'
+    t = re.sub(r'<break[^>]*time="(\d+)ms"[^>]*/>', _normalize_break, t)
+    # Remove any other tags than speak/p/s/break
+    t = re.sub(r"<(?!/?(speak|p|s|break)\b)[^>]+>", "", t, flags=re.IGNORECASE)
+    # Ensure speak wrapper
+    inner = re.sub(r"^\s*<\s*speak\s*>", "", t.strip(), flags=re.IGNORECASE)
+    inner = re.sub(r"<\s*/\s*speak\s*>\s*$", "", inner, flags=re.IGNORECASE)
+    return f"<speak>{inner}</speak>"
 
 def _limit(engine: str, text_type: str) -> int:
     base = NEURAL_LIMIT if engine == "neural" else STANDARD_LIMIT
@@ -247,10 +437,28 @@ def synthesize(text, *, text_type, voice, engine, outpath, output_format=OUTPUT_
             # If neural SSML still fails due to unsupported features, retry with standard
             msg = str(e)
             if text_type == "ssml" and engine == "neural" and ("InvalidSsmlException" in msg or "Unsupported Neural" in msg):
-                resp = pc.synthesize_speech(
-                    Text=seg, TextType=text_type, VoiceId=voice, Engine="standard",
-                    OutputFormat=output_format, SampleRate=sample_rate
-                )
+                # First try minimal sanitization to stay on neural
+                minimally_sanitized = sanitize_ssml_for_neural_minimal(seg)
+                try:
+                    resp = pc.synthesize_speech(
+                        Text=minimally_sanitized, TextType=text_type, VoiceId=voice, Engine="neural",
+                        OutputFormat=output_format, SampleRate=sample_rate
+                    )
+                except (BotoCoreError, ClientError):
+                    # Then try standard engine with the original seg. If the voice does not support standard,
+                    # fall back to an Indian voice that does support the needed engine.
+                    try:
+                        resp = pc.synthesize_speech(
+                            Text=seg, TextType=text_type, VoiceId=voice, Engine="standard",
+                            OutputFormat=output_format, SampleRate=sample_rate
+                        )
+                    except (BotoCoreError, ClientError):
+                        # Switch voice/engine and retry once
+                        fallback_voice, fallback_engine = select_indian_voice(preferred_engine="standard")
+                        resp = pc.synthesize_speech(
+                            Text=minimally_sanitized, TextType=text_type, VoiceId=fallback_voice, Engine=fallback_engine,
+                            OutputFormat=output_format, SampleRate=sample_rate
+                        )
             else:
                 raise RuntimeError(f"synthesize_speech failed for {voice} ({engine}) seg#{idx}: {e}")
 
@@ -274,7 +482,47 @@ def list_voices(language_code=None):
         voices.extend(page.get("Voices", []))
     return voices
 
-def grid_synthesize(text, ssml, *, language_code=GRID_LANGUAGE_CODE, outdir="out/grid"):
+def select_indian_voice(preferred_engine: str = BASELINE_ENGINE):
+    """
+    Prefer Indian voices in this order: Kajal, Raveena, Aditi.
+    Choose the preferred engine if supported, otherwise fall back to any supported engine.
+    """
+    try:
+        indian_voices = []
+        # Try Indian English and Hindi voices
+        for lang_code in ("en-IN", "hi-IN"):
+            indian_voices.extend(list_voices(language_code=lang_code))
+        # If API does not filter or returns empty, fall back to all voices
+        if not indian_voices:
+            indian_voices = list_voices()
+
+        preferred_voice_ids = ["Kajal", "Raveena", "Aditi"]
+
+        # Try preferred list first
+        for voice_id in preferred_voice_ids:
+            for v in indian_voices:
+                if v.get("Id") == voice_id:
+                    engines = v.get("SupportedEngines") or []
+                    if preferred_engine in engines:
+                        return voice_id, preferred_engine
+                    if engines:
+                        return voice_id, engines[0]
+
+        # Otherwise, pick any Indian voice
+        for v in indian_voices:
+            engines = v.get("SupportedEngines") or []
+            if not engines:
+                continue
+            engine = preferred_engine if preferred_engine in engines else engines[0]
+            return v.get("Id"), engine
+    except Exception:
+        pass
+
+    # Fallback to configured baseline if discovery fails
+    return BASELINE_VOICE, BASELINE_ENGINE
+
+def grid_synthesize(text, ssml, *, language_code=GRID_LANGUAGE_CODE, outdir=None):
+    outdir = outdir or os.path.join(OUTPUT_BASE_DIR, "grid")
     ensure_dirs(outdir)
     voices = list_voices(language_code=language_code) or list_voices()
     combos = [(v["Id"], eng) for v in voices for eng in (v.get("SupportedEngines") or [])]
@@ -296,15 +544,19 @@ def grid_synthesize(text, ssml, *, language_code=GRID_LANGUAGE_CODE, outdir="out
 
 def main():
     _assert_aws_creds()
-    ensure_dirs("out/baseline")
+    ensure_dirs(os.path.join(OUTPUT_BASE_DIR, "baseline"))
 
-    # Baseline: two files (plain + SSML) for the chosen voice/engine
-    baseline_text_path = f"out/baseline/plain_{BASELINE_VOICE}_{BASELINE_ENGINE}.{OUTPUT_FORMAT}"
-    baseline_ssml_path = f"out/baseline/ssml_{BASELINE_VOICE}_{BASELINE_ENGINE}.{OUTPUT_FORMAT}"
-    synthesize(TEXT_INPUT, text_type="text", voice=BASELINE_VOICE,
-               engine=BASELINE_ENGINE, outpath=baseline_text_path)
-    synthesize(SSML_INPUT,  text_type="ssml", voice=BASELINE_VOICE,
-               engine=BASELINE_ENGINE, outpath=baseline_ssml_path)
+    # Select an Indian voice automatically (prefers Kajal, then Raveena, then Aditi)
+    selected_voice, selected_engine = select_indian_voice(preferred_engine=BASELINE_ENGINE)
+    print(f"Using voice: {selected_voice} | Engine: {selected_engine}")
+
+    # Baseline: two files (plain + SSML) for the selected voice/engine
+    baseline_text_path = os.path.join(OUTPUT_BASE_DIR, "baseline", f"plain_{selected_voice}_{selected_engine}.{OUTPUT_FORMAT}")
+    baseline_ssml_path = os.path.join(OUTPUT_BASE_DIR, "baseline", f"ssml_{selected_voice}_{selected_engine}.{OUTPUT_FORMAT}")
+    synthesize(TEXT_INPUT, text_type="text", voice=selected_voice,
+               engine=selected_engine, outpath=baseline_text_path)
+    synthesize(SSML_INPUT,  text_type="ssml", voice=selected_voice,
+               engine=selected_engine, outpath=baseline_ssml_path)
     print(f"\nBaseline files written:\n  {baseline_text_path}\n  {baseline_ssml_path}\n")
 
     if DO_GRID:
